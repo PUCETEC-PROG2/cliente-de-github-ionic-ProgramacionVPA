@@ -1,0 +1,55 @@
+/* src/pages/Tab1.css */
+
+/* Fondo general oscuro */
+ion-content {
+  --background: #121212;
+}
+
+/* Tarjeta oscura */
+.repo-card {
+  margin: 16px;
+  border-radius: 16px;
+  background: #1e1e1e; /* Gris oscuro */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  border: 1px solid #333;
+  overflow: hidden;
+}
+
+/* Encabezado gradiente oscuro */
+.repo-header {
+  background: linear-gradient(90deg, #1f1f1f 0%, #2c2c2c 100%);
+  border-bottom: 1px solid #333;
+  padding: 15px;
+  color: #fff;
+}
+
+.repo-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #50c8ff; /* Azul neón para el título */
+}
+
+/* Cuerpo */
+.repo-body {
+  padding: 15px;
+}
+
+.repo-desc {
+  color: #b0b0b0; /* Texto gris claro */
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+/* Botones */
+.repo-actions {
+  border-top: 1px solid #333;
+  padding: 8px;
+  display: flex;
+  justify-content: flex-end;
+  background: #1a1a1a;
+}

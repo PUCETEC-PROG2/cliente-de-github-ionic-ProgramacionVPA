@@ -1,11 +1,11 @@
 // src/pages/Tab1.tsx
 import { 
   IonContent, IonHeader, IonPage, IonTitle, IonToolbar,
-  IonList, IonItem, IonLabel, IonNote, IonIcon, IonLoading, 
+  IonCard, IonButton, IonIcon, IonLoading, 
   IonRefresher, IonRefresherContent, 
-  IonButton, IonButtons, IonToast, useIonAlert // Importamos componentes para alertas y botones
+  IonToast, useIonAlert, IonBadge
 } from '@ionic/react';
-import { logoGithub, trashOutline, createOutline } from 'ionicons/icons'; // Importamos iconos de basura y lápiz
+import { logoGithub, trashOutline, createOutline, codeSlashOutline, timeOutline } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { githubService } from '../services/github.service';
 import './Tab1.css';
@@ -14,10 +14,10 @@ const Tab1: React.FC = () => {
   const [repos, setRepos] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   
-  // Estado para mensajes de feedback visual
+  // Estado para mensajes
   const [message, setMessage] = useState<string | null>(null);
   
-  // Hook para mostrar alertas nativas
+  // Alertas nativas
   const [presentAlert] = useIonAlert();
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const Tab1: React.FC = () => {
     event.detail.complete();
   };
 
-  // Función para eliminar un repositorio (DELETE)
+  // Función para eliminar repositorio (DELETE)
   const handleDelete = (repo: any) => {
     presentAlert({
       header: '¿Eliminar Repositorio?',
@@ -54,9 +54,12 @@ const Tab1: React.FC = () => {
           handler: async () => {
             try {
               setLoading(true);
+              // Borramos en GitHub
               await githubService.deleteRepo(repo.owner.login, repo.name);
+              
+              // Actualizamos la lista localmente (filtro por ID)
+              setRepos(prevRepos => prevRepos.filter(item => item.id !== repo.id));
               setMessage('Repositorio eliminado correctamente');
-              fetchRepos();
             } catch (error) {
               setMessage('Error al eliminar el repositorio');
             } finally {
@@ -68,18 +71,16 @@ const Tab1: React.FC = () => {
     });
   };
 
-  // Función para actualizar la descripción (PATCH)
+  // Función para actualizar descripción (PATCH)
   const handleUpdate = (repo: any) => {
     presentAlert({
       header: 'Actualizar Descripción',
-      inputs: [
-        {
-          name: 'description',
-          type: 'textarea',
-          placeholder: 'Nueva descripción...',
-          value: repo.description
-        }
-      ],
+      inputs: [{ 
+        name: 'description', 
+        type: 'textarea', 
+        placeholder: 'Nueva descripción...', 
+        value: repo.description 
+      }],
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
         {
@@ -87,9 +88,15 @@ const Tab1: React.FC = () => {
           handler: async (data) => {
             try {
               setLoading(true);
+              // Actualizamos en GitHub
               await githubService.updateRepo(repo.owner.login, repo.name, data.description);
+
+              // Actualizamos la lista localmente (busco por ID y edito)
+              setRepos(prevRepos => prevRepos.map(item => {
+                if (item.id === repo.id) return { ...item, description: data.description };
+                return item;
+              }));
               setMessage('Descripción actualizada correctamente');
-              fetchRepos();
             } catch (error) {
               setMessage('Error al actualizar');
             } finally {
@@ -104,53 +111,76 @@ const Tab1: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonTitle>Mis Repositorios</IonTitle>
+        <IonToolbar color="primary">
+          <IonTitle>Mis Proyectos</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
-        <IonLoading isOpen={loading} message="Procesando..." />
+      
+      <IonContent className="ion-padding-vertical">
+        <IonLoading isOpen={loading} message="Cargando proyectos..." />
         
         {/* Componente para recargar deslizando */}
         <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
 
-        <IonList>
-          {repos.map((repo) => (
-            <IonItem key={repo.id}>
-              <IonIcon slot="start" icon={logoGithub} />
-              <IonLabel>
-                <h2>{repo.name}</h2>
-                <p>{repo.description || 'Sin descripción'}</p>
-                {repo.language && <p style={{ color: 'var(--ion-color-primary)' }}>Lenguaje: {repo.language}</p>}
-              </IonLabel>
-              <IonNote slot="end" style={{ fontSize: '0.8rem' }}>
-                {new Date(repo.updated_at).toLocaleDateString()}
-              </IonNote>
+        {/* Lista de repositorios en tarjetas */}
+        {repos.map((repo) => (
+          <IonCard key={repo.id} className="repo-card">
+            
+            {/* Encabezado de la tarjeta */}
+            <div className="repo-header">
+              <h2 className="repo-title">
+                <IonIcon icon={logoGithub} />
+                {repo.name}
+              </h2>
+            </div>
 
-              {/* Componente de botones para Editar y Eliminar */}
-              <IonButtons slot="end">
-                <IonButton color="primary" onClick={() => handleUpdate(repo)}>
-                  <IonIcon slot="icon-only" icon={createOutline} />
-                </IonButton>
-                <IonButton color="danger" onClick={() => handleDelete(repo)}>
-                  <IonIcon slot="icon-only" icon={trashOutline} />
-                </IonButton>
-              </IonButtons>
+            {/* Detalles del proyecto */}
+            <div className="repo-body">
+              <p className="repo-desc">
+                {repo.description || 'Sin descripción disponible'}
+              </p>
+              
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginTop: '10px' }}>
+                {/* Badge del lenguaje si existe */}
+                {repo.language && (
+                  <IonBadge color="light">
+                    <IonIcon icon={codeSlashOutline} style={{ marginRight: '5px', verticalAlign: 'middle' }} />
+                    {repo.language}
+                  </IonBadge>
+                )}
+                
+                {/* Fecha de actualización */}
+                <span style={{ fontSize: '0.8rem', color: '#888', display: 'flex', alignItems: 'center' }}>
+                  <IonIcon icon={timeOutline} style={{ marginRight: '4px' }} />
+                  {new Date(repo.updated_at).toLocaleDateString()}
+                </span>
+              </div>
+            </div>
 
-            </IonItem>
-          ))}
-        </IonList>
+            {/* Botones de acción (Editar y Eliminar) */}
+            <div className="repo-actions">
+              <IonButton fill="clear" size="small" onClick={() => handleUpdate(repo)}>
+                <IonIcon slot="start" icon={createOutline} />
+                Editar
+              </IonButton>
+              <IonButton fill="clear" color="danger" size="small" onClick={() => handleDelete(repo)}>
+                <IonIcon slot="start" icon={trashOutline} />
+                Eliminar
+              </IonButton>
+            </div>
 
-        {/* Componente para feedback visual (Toast) */}
+          </IonCard>
+        ))}
+
+        {/* Mensaje flotante de confirmación */}
         <IonToast 
           isOpen={!!message} 
           message={message || ''} 
           duration={2000} 
           onDidDismiss={() => setMessage(null)} 
         />
-
       </IonContent>
     </IonPage>
   );

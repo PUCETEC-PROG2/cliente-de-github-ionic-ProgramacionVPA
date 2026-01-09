@@ -1,0 +1,55 @@
+ion-content {
+  --background: #121212;
+}
+
+.header-icon-container {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.neon-icon {
+  font-size: 80px;
+  color: #50c8ff;
+  filter: drop-shadow(0 0 5px rgba(80, 200, 255, 0.6));
+}
+
+.neon-text {
+  color: #fff;
+  margin-top: 10px;
+  font-family: monospace;
+}
+
+.dark-card {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 12px;
+}
+
+/* Inputs personalizados oscuros */
+.custom-input-group {
+  margin-bottom: 15px;
+}
+
+.custom-input-group label {
+  color: #888;
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.input-wrapper {
+  background: #121212;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 5px 10px;
+}
+
+.custom-input {
+  --color: white;
+  --placeholder-color: #555;
+}
+
+.transparent-item {
+  --background: transparent;
+  margin-top: 10px;
+}

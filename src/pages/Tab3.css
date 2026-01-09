@@ -1,0 +1,103 @@
+/* src/pages/Tab3.css */
+
+/* Fondo oscuro general */
+ion-content.profile-content {
+  --background: #121212;
+}
+
+/* Cabecera superior */
+.profile-header {
+  background: linear-gradient(180deg, #1e1e1e 0%, #121212 100%);
+  padding: 40px 20px 20px;
+  text-align: center;
+  border-bottom: 1px solid #333;
+}
+
+/* Avatar con brillo neón */
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.custom-avatar {
+  width: 120px;
+  height: 120px;
+  border: 3px solid #50c8ff; /* Azul neón */
+  box-shadow: 0 0 20px rgba(80, 200, 255, 0.4); /* Resplandor */
+}
+
+/* Textos */
+.user-name {
+  color: white;
+  margin: 10px 0 5px;
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+
+.user-handle {
+  color: #888;
+  margin: 0;
+  font-family: monospace;
+}
+
+/* Chips de ubicación/web */
+.info-chips {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dark-chip {
+  background: #2a2a2a !important;
+  color: #ddd !important;
+  border: 1px solid #444;
+}
+
+/* Tarjetas oscuras */
+.stats-card, .bio-card {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 16px;
+  margin: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* Grid de estadísticas */
+.stats-grid {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  padding: 20px !important;
+}
+
+.stat-item h3 {
+  color: white;
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.stat-item p {
+  color: #666;
+  margin: 0;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-icon {
+  color: #50c8ff;
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+/* Bio */
+.bio-text {
+  color: #ccc;
+  font-style: italic;
+  text-align: center;
+  line-height: 1.6;
+}
