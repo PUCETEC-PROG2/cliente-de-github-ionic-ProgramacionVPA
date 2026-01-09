@@ -3,9 +3,9 @@
 
 ## Información del Estudiante
 
-- **Nombre:** [Tu nombre completo aquí]
-- **Carrera:** [Tu carrera]
-- **Fecha de inicio:** [Fecha]
+- **Nombre:** [Victor Paul Alvarez Alvarez]
+- **Carrera:** [Desarrollo de sofware]
+- **Fecha de inicio:** [9/1/2026]
 
 ---
 
